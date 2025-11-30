@@ -1,0 +1,62 @@
+import tkinter as tk
+from tkinter import messagebox
+
+tasks = []
+
+def add_task():
+    task = entry.get()
+    if task != "":
+        tasks.append(task)
+        listbox.insert(tk.END, task)
+        entry.delete(0, tk.END)
+    else:
+        messagebox.showwarning("Warning", "Please enter a task!")
+
+def delete_task():
+    try:
+        selected_task = listbox.curselection()[0]
+        listbox.delete(selected_task)
+        tasks.pop(selected_task)
+    except:
+        messagebox.showwarning("Warning", "Please select a task!")
+
+def mark_done():
+    try:
+        selected_task = listbox.curselection()[0]
+        task_value = listbox.get(selected_task)
+        listbox.delete(selected_task)
+        listbox.insert(selected_task, task_value + " ✔")
+        tasks[selected_task] = task_value + " ✔"
+    except:
+        messagebox.showwarning("Warning", "Please select a task!")
+
+
+# GUI Window
+root = tk.Tk()
+root.title("To-Do List App")
+root.geometry("300x350")
+
+# Title
+label = tk.Label(root, text="My To-Do List", font=("Arial", 14))
+label.pack(pady=10)
+
+# Task Entry
+entry = tk.Entry(root, width=30)
+entry.pack(pady=5)
+
+# Buttons
+add_btn = tk.Button(root, text="Add Task", command=add_task)
+add_btn.pack(pady=5)
+
+done_btn = tk.Button(root, text="Mark as Done", command=mark_done)
+done_btn.pack(pady=5)
+
+delete_btn = tk.Button(root, text="Delete Task", command=delete_task)
+delete_btn.pack(pady=5)
+
+# List Box
+listbox = tk.Listbox(root, width=30, height=10)
+listbox.pack(pady=10)
+
+# Run App
+root.mainloop()
